@@ -4,11 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose_basics_codelab.ui.theme.ComposeBasicsTheme
@@ -18,7 +17,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-                ScreenContent()
+                Column {
+                    ScreenContent()
+                }
             }
         }
     }
@@ -38,12 +39,30 @@ fun MyApp(
 }
 
 @Composable
+fun Counter(count: Int, onClick: (Int) -> Unit) {
+    Button(onClick = { onClick(count + 1) }) {
+        Text("count: ${count}")
+    }
+}
+
+@Composable
 fun ScreenContent(names: List<String> = listOf("Android", "there")) {
+    val count = remember {
+        mutableStateOf(0)
+    }
+
     Column {
         for (name in names) {
-            Greeting(name)
+            Greeting("name: ${count.value}")
             Divider(color = Color.Black)
         }
+
+        Counter(
+            count = count.value,
+            onClick = {
+                count.value = it
+            }
+        )
     }
 }
 
