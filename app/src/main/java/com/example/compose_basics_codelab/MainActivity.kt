@@ -1,10 +1,18 @@
 package com.example.compose_basics_codelab
 
+// required for `by` keyword
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -14,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.compose_basics_codelab.ui.theme.ComposeBasicsTheme
 
 class MainActivity : ComponentActivity() {
@@ -78,9 +87,14 @@ fun NameList(names: List<String>, modifier: Modifier = Modifier) {
 
 @Composable
 fun Greeting(name: String) {
-    Surface(color = Color.Green) {
-        Text(text = "Hello $name!")
-    }
+    var selected by remember { mutableStateOf(false) }
+    val backgroundColor by animateColorAsState(targetValue = if (selected) Color.Red else Color.Transparent)
+
+
+    Text(text = "Hello $name!", modifier = Modifier
+        .padding(16.dp)
+        .background(color = backgroundColor)
+        .clickable { selected = !selected })
 }
 
 @Preview(showBackground = true)
